@@ -1,0 +1,63 @@
+name: OZIP Decrypter
+
+on:
+  workflow_dispatch:
+    inputs:
+      firmware:
+        description: 'Firmare Link'
+        required: true
+      filename:
+        description: 'Fill as it is file name of ozip without .ozip'
+        required: true
+
+env:
+  FIRMWARE: ${{ github.event.inputs.firmware }}
+  FILENAME: ${{ github.event.inputs.filename }}
+  TZ: Asia/Kolkata
+
+jobs:
+  decrypt-ozip:
+      runs-on: ubuntu-20.04
+
+      steps:
+      - name: Clone Repo "Haha Kang Go Brrrr"
+        run: git clone https://github.com/sinhaaryan03/oppo_ozip_decrypt
+
+      - name: Preparing Python Modules "Wash your Hands Before"
+        run: sudo pip3 install -r oppo_ozip_decrypt/requirements.txt
+
+      - name: Download Firmware which Has to be Decrypted
+        run: |
+             cd oppo_ozip_decrypt
+             aria2c $FIRMWARE
+
+      - name: Firmware is Gonna Decrypt Now (Haha HamkerMan)
+        run: |
+             cd oppo_ozip_decrypt
+             ./ozipdecrypt.py *.ozip
+
+      - name: Zipping Firmware Now (lil wait will be appreciated)
+        run: |
+             cd oppo_ozip_decrypt/out
+             zip -0 -r ${{ env.FILENAME }}.zip *
+  
+      - name: Uploading To PotatoForge
+        run: |
+              cd oppo_ozip_decrypt/out
+              sudo apt-get install expect -y
+              expect -c '
+              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
+              expect \"yes/no\"
+              send "yes\r"
+              expect \"Password\"       
+              send "${{ secrets.SFPASS }}\r"
+              expect \"sftp> \"
+              send "cd ${{ secrets.SFDIR }}\r"
+              set timeout -1
+              send "put ${{ env.FILENAME }}.zip\r"
+              expect "Uploading"
+              expect "*100%*"
+              expect "sftp*"
+              send "bye\r"
+              interact
+              '
