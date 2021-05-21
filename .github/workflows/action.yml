@@ -21,7 +21,7 @@ jobs:
 
       steps:
       - name: Clone Repo "Haha Kang Go Brrrr"
-        run: git clone https://github.com/sinhaaryan03/oppo_ozip_decrypt
+        run: git clone --depth=1 https://github.com/bkerler/oppo_ozip_decrypt oppo_ozip_decrypt
 
       - name: Preparing Python Modules "Wash your Hands Before"
         run: sudo pip3 install -r oppo_ozip_decrypt/requirements.txt
@@ -35,15 +35,10 @@ jobs:
         run: |
              cd oppo_ozip_decrypt
              ./ozipdecrypt.py *.ozip
-
-      - name: Zipping Firmware Now (lil wait will be appreciated)
-        run: |
-             cd oppo_ozip_decrypt/out
-             zip -0 -r ${{ env.FILENAME }}.zip *
   
       - name: Uploading To PotatoForge
         run: |
-              cd oppo_ozip_decrypt/out
+              cd oppo_ozip_decrypt
               sudo apt-get install expect -y
               expect -c '
               spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
