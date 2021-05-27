@@ -1,13 +1,13 @@
-name: OZIP Decrypter
+name: Firmware Dumper
 
 on:
   workflow_dispatch:
     inputs:
       firmware:
-        description: 'Firmare Link'
+        description: 'Direct Firmare Link'
         required: true
       filename:
-        description: 'Fill as it is file name of ozip without .ozip'
+        description: 'Fill as it is file name of zip/ozip with .zip/.ozip'
         required: true
 
 env:
@@ -20,39 +20,15 @@ jobs:
       runs-on: ubuntu-20.04
 
       steps:
-      - name: Clone Repo "Haha Kang Go Brrrr"
-        run: git clone --depth=1 https://github.com/bkerler/oppo_ozip_decrypt oppo_ozip_decrypt
+      - name: Clone Repo 
+        run: git clone --depth=1 https://github.com/sarthakroy2002/dumpyara dumpyara
 
-      - name: Preparing Python Modules "Wash your Hands Before"
-        run: sudo pip3 install -r oppo_ozip_decrypt/requirements.txt
-
-      - name: Download Firmware which Has to be Decrypted
+      - name: Download Firmware which Has to be Dumped
         run: |
-             cd oppo_ozip_decrypt
+             cd dumpyara
              aria2c $FIRMWARE
+             bash setup.sh expect -y
 
-      - name: Firmware is Gonna Decrypt Now (Haha HamkerMan)
+      - name: Firmware is now Gonna Dump
         run: |
-             cd oppo_ozip_decrypt
-             ./ozipdecrypt.py *.ozip
-  
-      - name: Uploading To PotatoForge
-        run: |
-              cd oppo_ozip_decrypt
-              sudo apt-get install expect -y
-              expect -c '
-              spawn sftp ${{ secrets.SFUSER }}@frs.sourceforge.net
-              expect \"yes/no\"
-              send "yes\r"
-              expect \"Password\"       
-              send "${{ secrets.SFPASS }}\r"
-              expect \"sftp> \"
-              send "cd ${{ secrets.SFDIR }}\r"
-              set timeout -1
-              send "put ${{ env.FILENAME }}.zip\r"
-              expect "Uploading"
-              expect "*100%*"
-              expect "sftp*"
-              send "bye\r"
-              interact
-              '
+             bash dumpyara.sh $FILENAME ${{ secrets.GKEY }}
