@@ -32,4 +32,5 @@ jobs:
 
       - name: Firmware is now Gonna Dump
         run: |
+             cd dumpyara
              bash dumpyara.sh $FILENAME ${{ secrets.GKEY }}
