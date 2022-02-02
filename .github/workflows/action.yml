@@ -11,8 +11,7 @@ on:
         required: true
 
 env:
-  FIRMWARE: ${{ github.event.inputs.firmware }}
-  FILENAME: ${{ github.event.inputs.filename }}
+  LINK: ${{ github.event.inputs.link }}
   TZ: Asia/Kolkata
 
 jobs:
@@ -35,4 +34,4 @@ jobs:
       - name: Firmware is now Gonna Dump
         run: |
              cd dumpyara
-             bash dumpyara.sh $FILENAME ${{ secrets.GKEY }}
+             bash dumpyara.sh $LINK ${{ secrets.GKEY }}
