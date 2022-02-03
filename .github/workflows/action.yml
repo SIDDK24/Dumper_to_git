@@ -3,11 +3,8 @@ name: Firmware Dumper
 on:
   workflow_dispatch:
     inputs:
-      firmware:
+      link:
         description: 'Direct Firmare Link'
-        required: true
-      filename:
-        description: 'Fill as it is file name of zip/ozip with .zip/.ozip'
         required: true
 
 env:
