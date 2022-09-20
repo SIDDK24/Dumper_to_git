@@ -21,15 +21,17 @@ jobs:
 
       - name: Clone Dumpyara and Download Firmware which Has to be Dumped
         run: |
-             git clone --depth=1 https://github.com/sarthakroy2002/dumpyara dumpyara
-             cd dumpyara
+             git clone --depth=1 https://github.com/DumprX/DumprX
+             cd DumprX
              sudo apt update -y && sudo apt upgrade -y
              sudo apt install unace unrar zip unzip p7zip-full p7zip-rar sharutils rar uudeview mpack arj cabextract device-tree-compiler liblzma-dev python3-pip brotli liblz4-tool axel gawk aria2 detox cpio rename expect -y
              sudo pip3 install backports.lzma protobuf pycrypto docopt zstandard twrpdtgen extract-dtb
              sudo pip3 install --upgrade protobuf==3.20.0
+             echo "${{ secrets.GORG }}" > .github_orgname
+             echo "${{ secrets.GKEY }}" > .github_token
 
       - name: Firmware is now Gonna Dump
         run: |
-             cd dumpyara
+             cd DumprX
              bash setup.sh
-             bash dumpyara.sh $LINK ${{ secrets.GKEY }}
+             bash dumper.sh $LINK
