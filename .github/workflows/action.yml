@@ -26,6 +26,7 @@ jobs:
              sudo apt update -y && sudo apt upgrade -y
              sudo apt install unace unrar zip unzip p7zip-full p7zip-rar sharutils rar uudeview mpack arj cabextract device-tree-compiler liblzma-dev python3-pip brotli liblz4-tool axel gawk aria2 detox cpio rename expect -y
              sudo pip3 install backports.lzma protobuf pycrypto docopt zstandard twrpdtgen extract-dtb
+             git config --global http.version HTTP/1.1
              sudo pip3 install --upgrade protobuf==3.20.0
 
       - name: Firmware is now Gonna Dump
