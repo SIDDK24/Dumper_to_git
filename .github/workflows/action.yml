@@ -19,6 +19,12 @@ jobs:
       - name: Cleanup Space
         uses: rokibhasansagar/slimhub_actions@main         
 
+      - name: Add configs
+        run: 
+             export GIT_TRACE_PACKET=1
+             export GIT_TRACE=1
+             export GIT_CURL_VERBOSE=1
+
       - name: Clone Dumpyara and Download Firmware which Has to be Dumped
         run: |
              git clone --depth=1 https://github.com/sarthakroy2002/dumpyara dumpyara
