@@ -12,7 +12,7 @@ env:
   TZ: Asia/Kolkata
 
 jobs:
-  decrypt-ozip:
+  dumper-workflowp:
       runs-on: ubuntu-20.04
 
       steps:
